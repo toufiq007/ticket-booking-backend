@@ -6,7 +6,7 @@ spring:
     name: booking
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/ticket-booking
+    url: jdbc:postgresql://localhost:5432/bookingDb
     username: postgres
     password: postgres
 
