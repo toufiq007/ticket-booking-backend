@@ -1,10 +1,7 @@
 package com.ticket_booking_backend.booking.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -15,6 +12,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name="tickets")
+@Builder
 public class TicketEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -29,11 +27,11 @@ public class TicketEntity {
     @Column(nullable = false)
     private TicketStatus status = TicketStatus.AVAILABLE;
 
-    @Column(nullable = false)
-    private UUID held_by;
+    @Column(name = "held_by", nullable = true)
+    private UUID heldBy;
 
-    @Column(nullable = false)
-    private LocalDateTime held_time;
+    @Column(name = "held_time", nullable = true)
+    private LocalDateTime heldTime;
 
     @Column(updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();

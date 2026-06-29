@@ -3,6 +3,7 @@ package com.ticket_booking_backend.booking.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -31,7 +32,11 @@ public class EventEntity {
     private Integer totalTickets;
 
     @Column(nullable = false)
-    private Integer ticketPrice;
+    private BigDecimal ticketPrice;
+
+    @Column(nullable = false)
+    private String venueName;
+
 
     @Column(nullable = false)
     private Boolean isActive;
