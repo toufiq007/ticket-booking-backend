@@ -5,6 +5,7 @@ import com.ticket_booking_backend.booking.dto.response.HeldResponseDto;
 import com.ticket_booking_backend.booking.entities.TicketEntity;
 import com.ticket_booking_backend.booking.entities.TicketStatus;
 import com.ticket_booking_backend.booking.exceptions.ConflictException;
+import com.ticket_booking_backend.booking.exceptions.ResourceNotFoundException;
 import com.ticket_booking_backend.booking.repository.TicketRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -45,5 +46,21 @@ public class HoldService {
 
         return heldResponse;
 
+    }
+
+
+    @Transactional
+    public Boolean releaseTicket( UUID userId) {
+        TicketEntity ticket = ticketRepository.findByHeldByAndStatus(userId,TicketStatus.HELD).orElseThrow(()-> new ResourceNotFoundException("Ticket not found from this user. userId" + userId   ));
+        // update the status available
+        ticket.setHeldBy(null);
+        ticket.setHeldTime(null);
+        ticket.setStatus(TicketStatus.AVAILABLE);
+
+        // save to db
+        ticketRepository.save(ticket);
+
+        // success response
+        return true;
     }
 }

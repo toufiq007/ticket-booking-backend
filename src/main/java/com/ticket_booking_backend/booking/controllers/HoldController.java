@@ -22,4 +22,10 @@ public class HoldController {
        return ResponseEntity.ok(heldTicketStatus);
     }
 
+    @PostMapping("/tickets/release")
+    public ResponseEntity<?> releaseTicket(@RequestParam UUID userId) {
+        boolean message = holdService.releaseTicket(userId);
+        return ResponseEntity.ok(message);
+    }
+
 }

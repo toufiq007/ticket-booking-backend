@@ -17,6 +17,8 @@ public interface TicketRepository extends JpaRepository<TicketEntity, UUID> {
 
     boolean existsByHeldByAndStatus(UUID helBy, TicketStatus ticketStatus);
 
+    Optional<TicketEntity> findByHeldByAndStatus(UUID helBy, TicketStatus ticketStatus);
+
     @Query(value = """
     SELECT * FROM tickets
     WHERE event_id = :eventId
