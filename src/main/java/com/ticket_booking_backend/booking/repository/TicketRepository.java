@@ -4,9 +4,11 @@ import com.ticket_booking_backend.booking.entities.EventEntity;
 import com.ticket_booking_backend.booking.entities.TicketEntity;
 import com.ticket_booking_backend.booking.entities.TicketStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,5 +23,11 @@ public interface TicketRepository extends JpaRepository<TicketEntity, UUID> {
     FOR UPDATE SKIP LOCKED
     """, nativeQuery = true)
     Optional<TicketEntity> findOneAvailableForUpdate(UUID eventId);
+
+//    expiry ticket after 2 minutes
+    @Modifying
+    @Query("UPDATE TicketEntity t SET t.status = 'AVAILABLE', t.heldBy = null, t.heldTime = null WHERE t.heldTime < :now AND t.status = 'HELD'")
+    int releaseExpiredHolds(@Param("now") LocalDateTime now);
+
 
 }
