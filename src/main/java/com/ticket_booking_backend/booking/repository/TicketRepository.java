@@ -15,6 +15,8 @@ import java.util.UUID;
 public interface TicketRepository extends JpaRepository<TicketEntity, UUID> {
     Long countByEventIdAndStatus(UUID eventId, TicketStatus ticketStatus);
 
+    boolean existsByHeldByAndStatus(UUID helBy, TicketStatus ticketStatus);
+
     @Query(value = """
     SELECT * FROM tickets
     WHERE event_id = :eventId

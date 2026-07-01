@@ -23,6 +23,11 @@ public class HoldService {
     public HeldResponseDto holdAndLockTheTicket( UUID eventId, UUID userId) {
         // 1: find the ticket
         TicketEntity ticket = ticketRepository.findOneAvailableForUpdate(eventId).orElseThrow(()-> new ConflictException("Ticket not found in this event. Event id" + eventId));
+        boolean alreadyHolding = ticketRepository.existsByHeldByAndStatus(userId, TicketStatus.HELD);
+
+        if (alreadyHolding) {
+            throw new ConflictException("You already have a ticket on hold. Complete payment or wait for it to expire.");
+        }
 
         // 3: status held, held-by set korte hobe and heldUntil set korte hobe
         ticket.setHeldBy(userId);
