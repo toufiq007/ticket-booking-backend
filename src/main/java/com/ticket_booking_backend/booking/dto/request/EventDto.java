@@ -20,6 +20,7 @@ public class EventDto {
     private String venue;
     private LocalDateTime eventDate;
     private Integer totalTickets;
+    private Long availableTickets;
     private BigDecimal ticketPrice;
     private Boolean isActive;
 }

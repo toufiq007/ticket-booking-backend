@@ -29,12 +29,23 @@ public class EventServices {
     private final TicketRepository ticketRepository;
 
     public List<EventDto> getAllActiveEvents (){
-        return eventRepository.findByIsActiveTrue().stream().map(event-> modelMapper.map(event, EventDto.class)).toList();
+        return eventRepository.findByIsActiveTrue()
+                .stream()
+                .map(event -> {
+                    EventDto dto = modelMapper.map(event, EventDto.class);
+                    Long availableTickets = ticketRepository.countByEventIdAndStatus(event.getId(), TicketStatus.AVAILABLE);
+                    dto.setAvailableTickets(availableTickets);
+                    return dto;
+                })
+//                .map(event-> modelMapper.map(event, EventDto.class))
+                .toList();
     }
 
     public EventDto getEventById(UUID id){
         EventEntity eventEntity = eventRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Event not found with this id " + id));
+        Long ticketCount = ticketRepository.countByEventIdAndStatus(id,TicketStatus.AVAILABLE);
         EventDto event = modelMapper.map(eventEntity, EventDto.class);
+        event.setAvailableTickets(ticketCount);
         return event;
     }
 

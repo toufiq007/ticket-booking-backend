@@ -14,7 +14,6 @@ import java.util.UUID;
 
 public interface TicketRepository extends JpaRepository<TicketEntity, UUID> {
     Long countByEventIdAndStatus(UUID eventId, TicketStatus ticketStatus);
-
     boolean existsByHeldByAndStatus(UUID helBy, TicketStatus ticketStatus);
 
     Optional<TicketEntity> findByHeldByAndStatus(UUID helBy, TicketStatus ticketStatus);
